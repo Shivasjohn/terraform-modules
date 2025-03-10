@@ -1,6 +1,5 @@
 # Allocate an Elastic IP (EIP) for the NAT Gateway
 resource "aws_eip" "this" {
-  domain = "vpc"
 
   tags = merge(var.tags, {
     Name = "${var.vpc_name}-nat-eip"
