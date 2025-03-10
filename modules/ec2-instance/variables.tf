@@ -4,32 +4,32 @@ variable "ami" {
 }
 
 variable "instance_type" {
-  description = "Instance type (e.g., t3.micro)"
+  description = "EC2 instance type"
   type        = string
-}
-
-variable "subnet_id" {
-  description = "Subnet ID for the instance"
-  type        = string
-}
-
-variable "security_groups" {
-  description = "List of security group IDs"
-  type        = list(string)
 }
 
 variable "instance_name" {
-  description = "Name tag for the instance"
+  description = "Name prefix for EC2 instances"
   type        = string
 }
 
-variable "environment" {
-  description = "Deployment environment (dev/test/prod)"
+variable "public_subnet_id" {
+  description = "Subnet ID where the public instance will be deployed"
   type        = string
 }
 
-variable "region" {
-  description = "AWS region"
+variable "private_subnet_id" {
+  description = "Subnet ID where the private instance will be deployed"
   type        = string
-  default     = "us-east-1"
+}
+
+variable "security_group_id" {
+  description = "Security Group ID to attach to EC2 instances"
+  type        = string
+}
+
+variable "tags" {
+  description = "Tags to apply to all resources"
+  type        = map(string)
+  default     = {}
 }

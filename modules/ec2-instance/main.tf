@@ -1,24 +1,25 @@
-# Configure the AWS Provider
+# Create Public EC2 Instance
+resource "aws_instance" "public" {
+  ami                    = var.ami
+  instance_type          = var.instance_type
+  subnet_id             = var.public_subnet_id
+  vpc_security_group_ids = [var.security_group_id]
+  associate_public_ip_address = true # Public instance needs a public IP
 
-provider "aws" {
-  region = var.region
+  tags = merge(var.tags, {
+    Name = "${var.instance_name}-public"
+  })
 }
 
-resource "aws_instance" "this" {
-  ami             = var.ami
-  instance_type   = var.instance_type
-  subnet_id       = var.subnet_id
-  security_groups = var.security_groups
-  user_data       = <<-EOF
-              #!/bin/bash
-              apt update -y
-              apt install -y apache2
-              systemctl start apache2
-              systemctl enable apache2
-              EOF
+# Create Private EC2 Instance
+resource "aws_instance" "private" {
+  ami                    = var.ami
+  instance_type          = var.instance_type
+  subnet_id             = var.private_subnet_id
+  vpc_security_group_ids = [var.security_group_id]
+  associate_public_ip_address = false # Private instance has NO public IP
 
-  tags = {
-    Name = var.instance_name
-    Env  = var.environment
-  }
+  tags = merge(var.tags, {
+    Name = "${var.instance_name}-private"
+  })
 }
